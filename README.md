@@ -4,7 +4,7 @@ A static website showcasing Y Combinator's Winter 2026 batch companies.
 
 ## Live Site
 
-Visit: https://yourusername.github.io/yc-w26-cohort/
+Visit: https://wzgl-sx.github.io/yc-w26-cohort/
 
 ## About
 

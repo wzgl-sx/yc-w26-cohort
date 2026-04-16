@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YC Winter 2026 Cohort - Company Directory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --yc-orange: #ff6600;
+            --yc-orange-light: #ff8533;
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #666666;
+            --border: #2a2a2a;
+            --gradient-start: #ff6600;
+            --gradient-end: #ff8533;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --glow: rgba(255, 102, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--yc-orange), var(--yc-orange-light));
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .yc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 102, 0, 0.1);
+            border: 1px solid var(--yc-orange);
+            color: var(--yc-orange);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .yc-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding: 1.5rem;
+            background: rgba(255, 102, 0, 0.05);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--yc-orange);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--yc-orange);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.625rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--yc-orange);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--yc-orange);
+            border-color: var(--yc-orange);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-count {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Company Grid */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Company Card */
+        .company-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--yc-orange), transparent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .company-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--yc-orange);
+            box-shadow: 0 8px 32px var(--shadow);
+        }
+
+        .company-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--yc-orange) 0%, var(--yc-orange-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .company-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .company-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .company-website {
+            font-size: 0.8rem;
+            color: var(--yc-orange);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .company-website:hover {
+            text-decoration: underline;
+        }
+
+        .company-tagline {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tag-category {
+            background: rgba(255, 102, 0, 0.1);
+            color: var(--yc-orange);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+        }
+
+        .tag-industry {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .tag-funding {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .tag-hardware {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Featured Cards */
+        .company-card.featured {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255, 102, 0, 0.05) 100%);
+            border-color: rgba(255, 102, 0, 0.3);
+        }
+
+        .company-card.featured::after {
+            content: '★ FEATURED';
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--yc-orange);
+            letter-spacing: 0.5px;
+        }
+
+        /* Description Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .modal-link:hover {
+            border-color: var(--yc-orange);
+            background: rgba(255, 102, 0, 0.1);
+        }
+
+        .modal-link.primary {
+            background: var(--yc-orange);
+            border-color: var(--yc-orange);
+        }
+
+        .modal-link.primary:hover {
+            background: var(--yc-orange-light);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--yc-orange);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats-bar {
+                gap: 1.5rem;
+            }
+
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--yc-orange);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .no-results svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Highlighted Text */
+        .highlight {
+            background: rgba(255, 102, 0, 0.2);
+            color: var(--yc-orange);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="yc-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                Y Combinator
+            </div>
+            <h1>Winter 2026 Cohort</h1>
+            <p class="subtitle">The deepest-tech YC batch in recent memory</p>
+            
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value">199</div>
+                    <div class="stat-label">Companies</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">~10%</div>
+                    <div class="stat-label">Projected Unicorn Rate</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">1 in 8</div>
+                    <div class="stat-label">Hardware Startups</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">56</div>
+                    <div class="stat-label">AI-Native Services</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search companies, descriptions, or categories...">
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="ai">AI/ML</button>
+            <button class="filter-btn" data-filter="infrastructure">Infrastructure</button>
+            <button class="filter-btn" data-filter="healthcare">Healthcare</button>
+            <button class="filter-btn" data-filter="hardware">Hardware</button>
+            <button class="filter-btn" data-filter="fintech">Fintech</button>
+            <button class="filter-btn" data-filter="enterprise">Enterprise</button>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- Tier S Companies -->
+        <div class="section-header">
+            <h2 class="section-title">🏆 Tier S - Top Picks</h2>
+            <span class="section-count">4</span>
+        </div>
+        <div class="company-grid" id="tier-s">
+            <div class="company-card featured" data-category="infrastructure energy" data-name="squid energy">
+                <div class="card-header">
+                    <div class="company-logo">SQ</div>
+                    <div class="company-info">
+                        <div class="company-name">Squid Energy</div>
+                        <a href="https://squid.energy" target="_blank" class="company-website">
+                            squid.energy
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI-powered grid planning in your browser. Browser-native workspace for modeling energy networks, projects, and policies.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">Infrastructure</span>
+                    <span class="tag tag-hardware">Energy</span>
+                </div>
+            </div>
+
+            <div class="company-card featured" data-category="ai fintech" data-name="valence">
+                <div class="card-header">
+                    <div class="company-logo">VA</div>
+                    <div class="company-info">
+                        <div class="company-name">Valence</div>
+                        <a href="https://valence.trade" target="_blank" class="company-website">
+                            valence.trade
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="company-tagline">Unified prediction markets trading platform. Prediction markets superapp for individual traders and teams.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Fintech</span>
+                </div>
+            </div>
+
+            <div class="company-card featured" data-category="ai developer tools" data-name="21st labs">
+                <div class="card-header">
+                    <div class="company-logo">21</div>
+                    <div class="company-info">
+                        <div class="company-name">21st Labs</div>
+                        <a href="https://21st.dev" target="_blank" class="company-website">
+                            21st.dev
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI-generated UI components for developers. Thousands of high-quality React components to explore, copy, and remix.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Developer Tools</span>
+                </div>
+            </div>
+
+            <div class="company-card featured" data-category="ai fintech insurance" data-name="panta">
+                <div class="card-header">
+                    <div class="company-logo">PA</div>
+                    <div class="company-info">
+                        <div class="company-name">Panta Insurance</div>
+                        <a href="https://pantainsure.com" target="_blank" class="company-website">
+                            pantainsure.com
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="company-tagline">Commercial insurance brokerage run by AI agents. Scales like software for construction, logistics, and manufacturing.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Insurance</span>
+                    <span class="tag tag-funding">AI Agents</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notable Companies -->
+        <div class="section-header">
+            <h2 class="section-title">🔥 Notable Companies</h2>
+            <span class="section-count" id="notable-count">16</span>
+        </div>
+        <div class="company-grid" id="notable-grid">
+            <div class="company-card" data-category="ai healthcare" data-name="beacon health">
+                <div class="card-header">
+                    <div class="company-logo">BE</div>
+                    <div class="company-info">
+                        <div class="company-name">Beacon Health</div>
+                        <a href="https://beaconhealth.ai" target="_blank" class="company-website">beaconhealth.ai</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI agents for primary care. Best-funded health startup in batch with $5.4M from Accel + Sequoia scout.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-funding">$5.4M Raised</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="hardware productivity" data-name="pocket">
+                <div class="card-header">
+                    <div class="company-logo">PO</div>
+                    <div class="company-info">
+                        <div class="company-name">Pocket</div>
+                        <a href="https://heypocket.com" target="_blank" class="company-website">heypocket.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">The world's best AI note-taking device and app. $27M ARR at seed stage - 30K+ units shipped in 5 months.</p>
+                <div class="card-footer">
+                    <span class="tag tag-hardware">Hardware</span>
+                    <span class="tag tag-funding">$27M ARR</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai research" data-name="synthetic sciences">
+                <div class="card-header">
+                    <div class="company-logo">SS</div>
+                    <div class="company-info">
+                        <div class="company-name">Synthetic Sciences</div>
+                        <a href="https://syntheticsciences.ai" target="_blank" class="company-website">syntheticsciences.ai</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI co-scientists that run research end-to-end. "Claude Code for Science" - $1.4M pre-YC by 18-year-old founders.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI Research</span>
+                    <span class="tag tag-funding">$1.9M Total</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai enterprise" data-name="cardinal">
+                <div class="card-header">
+                    <div class="company-logo">CA</div>
+                    <div class="company-info">
+                        <div class="company-name">Cardinal</div>
+                        <a href="https://trycardinal.ai" target="_blank" class="company-website">trycardinal.ai</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI Platform for Precision Outbound. Already has 40+ YC companies as paying customers. 2x YC alumni founders (S23, W26).</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Enterprise</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai devops" data-name="mendral">
+                <div class="card-header">
+                    <div class="company-logo">ME</div>
+                    <div class="company-info">
+                        <div class="company-name">Mendral</div>
+                        <a href="https://mendral.com" target="_blank" class="company-website">mendral.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI DevOps Engineer. Diagnoses CI failures, catches issues before deployment, and automatically implements fixes.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">DevOps</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="hardware energy" data-name="voxel energy">
+                <div class="card-header">
+                    <div class="company-logo">VO</div>
+                    <div class="company-info">
+                        <div class="company-name">Voxel Energy</div>
+                        <a href="https://voxelenergy.com" target="_blank" class="company-website">voxelenergy.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Energy independent data centers with solar and repurposed batteries. Modular energy storage and delivery systems.</p>
+                <div class="card-footer">
+                    <span class="tag tag-hardware">Hardware</span>
+                    <span class="tag tag-industry">Energy</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai robotics" data-name="servo7">
+                <div class="card-header">
+                    <div class="company-logo">S7</div>
+                    <div class="company-info">
+                        <div class="company-name">Servo7</div>
+                        <a href="https://servo7.com" target="_blank" class="company-website">servo7.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Autonomous warehouse robots for packaging, order fulfillment, sorting, and returns processing. Quick implementation.</p>
+                <div class="card-footer">
+                    <span class="tag tag-hardware">Robotics</span>
+                    <span class="tag tag-industry">Logistics</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai infrastructure" data-name="chamber">
+                <div class="card-header">
+                    <div class="company-logo">CH</div>
+                    <div class="company-info">
+                        <div class="company-name">Chamber</div>
+                        <a href="https://usechamber.io" target="_blank" class="company-website">usechamber.io</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Autopiloting your AI infrastructure. GPU infrastructure optimization platform maximizing GPU utilization.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Infrastructure</span>
+                    <span class="tag tag-funding">$500K Raised</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai fintech" data-name="general legal">
+                <div class="card-header">
+                    <div class="company-logo">GL</div>
+                    <div class="company-info">
+                        <div class="company-name">General Legal</div>
+                        <a href="https://general.legal" target="_blank" class="company-website">general.legal</a>
+                    </div>
+                </div>
+                <p class="company-tagline">The AI native law firm for growth stage companies. Contract review and legal services with flat-fee pricing.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Legal</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai security" data-name="beesafe ai">
+                <div class="card-header">
+                    <div class="company-logo">BS</div>
+                    <div class="company-info">
+                        <div class="company-name">BeeSafe AI</div>
+                        <a href="https://beesafe.ai" target="_blank" class="company-website">beesafe.ai</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Stopping scams before they reach customers. Fraud prevention platform that engages directly with scammers.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Security</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai healthcare" data-name="ritivel">
+                <div class="card-header">
+                    <div class="company-logo">RI</div>
+                    <div class="company-info">
+                        <div class="company-name">Ritivel</div>
+                        <a href="https://ritivel.com" target="_blank" class="company-website">ritivel.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Turn clinical trial data into FDA submission documents in minutes. AI-native regulatory platform for life sciences.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Healthcare</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="space ai" data-name="constellation space">
+                <div class="card-header">
+                    <div class="company-logo">CS</div>
+                    <div class="company-info">
+                        <div class="company-name">Constellation Space</div>
+                        <a href="https://constellation-io.com" target="_blank" class="company-website">constellation-io.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI for space mission assurance. ConstellationOS predicts and prevents satellite link failures using real-time telemetry.</p>
+                <div class="card-footer">
+                    <span class="tag tag-hardware">Space</span>
+                    <span class="tag tag-category">AI</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai devops" data-name="corelayer">
+                <div class="card-header">
+                    <div class="company-logo">CO</div>
+                    <div class="company-info">
+                        <div class="company-name">Corelayer</div>
+                        <a href="https://corelayer.com" target="_blank" class="company-website">corelayer.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI on-call engineer that debugs using data. Monitors logs, detects issues, and suggests fixes in production.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">DevOps</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai robotics" data-name="remy ai">
+                <div class="card-header">
+                    <div class="company-logo">RE</div>
+                    <div class="company-info">
+                        <div class="company-name">Remy.Ai</div>
+                        <a href="https://tryremy.ai" target="_blank" class="company-website">tryremy.ai</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Automating dexterous tasks in warehouses. AI-powered robots for complex warehouse operations.</p>
+                <div class="card-footer">
+                    <span class="tag tag-hardware">Robotics</span>
+                    <span class="tag tag-industry">Logistics</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai fintech" data-name="maven">
+                <div class="card-header">
+                    <div class="company-logo">MA</div>
+                    <div class="company-info">
+                        <div class="company-name">Maven</div>
+                        <a href="https://trymaven.com" target="_blank" class="company-website">trymaven.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">Payments for Voice AI Agents. PCI-compliant card payments during live voice calls with simple integration.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Payments</span>
+                </div>
+            </div>
+
+            <div class="company-card" data-category="ai healthcare" data-name="prana health">
+                <div class="card-header">
+                    <div class="company-logo">PH</div>
+                    <div class="company-info">
+                        <div class="company-name">Prana Health</div>
+                        <a href="https://pranadoc.com" target="_blank" class="company-website">pranadoc.com</a>
+                    </div>
+                </div>
+                <p class="company-tagline">AI primary care doctor in your pocket. 24/7 AI doctor service providing instant health answers.</p>
+                <div class="card-footer">
+                    <span class="tag tag-category">AI</span>
+                    <span class="tag tag-industry">Healthcare</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Companies -->
+        <div class="section-header">
+            <h2 class="section-title">📋 All Companies</h2>
+            <span class="section-count" id="all-count">Loading...</span>
+        </div>
+        <div class="company-grid" id="all-grid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Company Name</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description" id="modalDescription">Description goes here...</p>
+                <div class="modal-links" id="modalLinks">
+                    <!-- Links will be populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Data sourced from <a href="https://www.ycombinator.com/companies" target="_blank">Y Combinator</a> and <a href="https://www.extruct.ai" target="_blank">Extruct.ai</a></p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Winter 2026 Batch • Demo Day March 24, 2026</p>
+    </footer>
+
+    <script>
+        // Company data
+        const companies = [
+            { name: "21st Labs", website: "21st.dev", tagline: "AI-generated UI components for developers", category: "ai", tags: ["Developer Tools", "AI"], tier: "s" },
+            { name: "Aemon", website: "aemon.ai", tagline: "The AI R&D Engineer", category: "ai", tags: ["AI Research", "Enterprise"], tier: "all" },
+            { name: "Approxima", website: "approxima.ai", tagline: "Your software should build itself", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "ARC Prize Foundation", website: "arcprize.org", tagline: "AI benchmarks that measure general intelligence", category: "ai", tags: ["AI Research", "Nonprofit"], funding: "$3M", tier: "all" },
+            { name: "Arcline", website: "arcline-ai.com", tagline: "Startup legal work handled by elite lawyers", category: "ai", tags: ["AI", "Legal"], tier: "all" },
+            { name: "Arzule", website: "arzule.com", tagline: "AI agents for strategic partnership research", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Asimov", website: "tryasimov.ai", tagline: "Internet-scale marketplace for robot training data", category: "ai", tags: ["AI", "Robotics"], tier: "all" },
+            { name: "Aurorin", website: "aurorincad.com", tagline: "Modern CAD for mechanical engineers", category: "hardware", tags: ["Hardware", "Engineering"], tier: "all" },
+            { name: "AutoSitu", website: "autositu.com", tagline: "AI-native workspace for municipal development review", category: "enterprise", tags: ["AI", "Government"], tier: "all" },
+            { name: "Autumn AI", website: "autumnai.com", tagline: "Stalk your prospects at scale", category: "ai", tags: ["AI", "Sales"], tier: "all" },
+            { name: "Avoice", website: "avoice.co", tagline: "The AI Workspace For Architects", category: "ai", tags: ["AI", "Construction"], funding: "$500K", tier: "all" },
+            { name: "AxionOrbital", website: "axionorbital.space", tagline: "Foundation models for 24/7 Earth Observation", category: "space", tags: ["Space", "AI"], tier: "all" },
+            { name: "Balance", website: "getbalance.ai", tagline: "Full-Stack AI Accounting", category: "fintech", tags: ["AI", "Finance"], tier: "all" },
+            { name: "BaseFrame", website: "baseframe.co", tagline: "AI agents for hardware design", category: "hardware", tags: ["AI", "Hardware"], tier: "all" },
+            { name: "Beacon Health", website: "beaconhealth.ai", tagline: "AI agents for primary care", category: "healthcare", tags: ["AI", "Healthcare"], funding: "$5.4M", tier: "notable" },
+            { name: "BeeSafe AI", website: "beesafe.ai", tagline: "Stopping scams before they reach customers", category: "ai", tags: ["AI", "Security"], tier: "notable" },
+            { name: "Bidflow", website: "usebidflow.com", tagline: "AI Copilot for Electrical Estimating", category: "ai", tags: ["AI", "Construction"], tier: "all" },
+            { name: "Booko", website: "bookoapp.com", tagline: "Dynamic pricing for service businesses", category: "ai", tags: ["AI", "Scheduling"], tier: "all" },
+            { name: "Bubble Lab", website: "bubblelab.ai", tagline: "Open-source agentic workflow builder", category: "ai", tags: ["AI", "Developer Tools"], funding: "$500K", tier: "all" },
+            { name: "Button Computer", website: "buttoncomputer.com", tagline: "Button is the wearable AI that can talk", category: "hardware", tags: ["Hardware", "AI"], tier: "all" },
+            { name: "Byteport", website: "byteport.io", tagline: "Global upload acceleration for 1GB-100TB files", category: "infrastructure", tags: ["Infrastructure", "Cloud"], tier: "all" },
+            { name: "Cajal", website: "caj.al", tagline: "Scaling formal verification to accelerate scientific discovery", category: "ai", tags: ["AI", "Research"], tier: "all" },
+            { name: "Canary", website: "runcanary.ai", tagline: "The first AI QA engineer that understands your codebase", category: "ai", tags: ["AI", "Developer Tools"], tier: "all" },
+            { name: "Cardboard", website: "usecardboard.com", tagline: "Agentic video editor", category: "ai", tags: ["AI", "Video"], tier: "all" },
+            { name: "Cardinal", website: "trycardinal.ai", tagline: "AI Platform for Precision Outbound", category: "ai", tags: ["AI", "Enterprise"], tier: "notable" },
+            { name: "Caretta", website: "caretta.so", tagline: "24/7 Sales Intelligence", category: "ai", tags: ["AI", "Sales"], funding: "$1.08M", tier: "all" },
+            { name: "Carrot Labs", website: "carrotlabs.ai", tagline: "Continuous Learning Platform for AI Agents", category: "ai", tags: ["AI", "ML Infrastructure"], tier: "all" },
+            { name: "Carson", website: "usecarson.com", tagline: "More capable than Cowork, more secure than OpenClaw", category: "ai", tags: ["AI", "Productivity"], tier: "all" },
+            { name: "CatchBack", website: "catchbackcards.com", tagline: "Trading card marketplace with buyback guarantee", category: "fintech", tags: ["Marketplace", "Gaming"], tier: "all" },
+            { name: "Chamber", website: "usechamber.io", tagline: "Autopiloting your AI infrastructure", category: "infrastructure", tags: ["AI", "Infrastructure"], funding: "$500K", tier: "notable" },
+            { name: "Chasi AI", website: "chasi.co", tagline: "AI Concierge for Equipment sales, service & rentals", category: "ai", tags: ["AI", "Enterprise"], funding: "$2.5M", tier: "all" },
+            { name: "ClaimGlide", website: "claimglide.com", tagline: "AI automated prior-auths for private medical practices", category: "healthcare", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Clice", website: "clice.ai", tagline: "Personal AI assistants coordinating team workflows", category: "ai", tags: ["AI", "Productivity"], tier: "all" },
+            { name: "CodeWisp", website: "codewisp.net", tagline: "Anyone can easily create real web games with AI", category: "ai", tags: ["AI", "Gaming"], tier: "all" },
+            { name: "Cofia", website: "cofia.ai", tagline: "AI automations that write themselves", category: "ai", tags: ["AI", "Automation"], tier: "all" },
+            { name: "Compresr", website: "compresr.ai", tagline: "LLM-native context compression", category: "infrastructure", tags: ["AI", "Infrastructure"], tier: "all" },
+            { name: "Condor Energy", website: "condor.energy", tagline: "Energy OS enabling reliable, cheap and sustainable electricity", category: "energy", tags: ["Energy", "AI"], tier: "all" },
+            { name: "Congruent", website: "congruent.io", tagline: "We build radars for end-to-end autonomy", category: "hardware", tags: ["Hardware", "Automotive"], tier: "all" },
+            { name: "Constellation Space", website: "constellation-io.com", tagline: "AI for space mission assurance", category: "space", tags: ["Space", "AI"], tier: "notable" },
+            { name: "Copperlane", website: "copperlane.ai", tagline: "Agents for Mortgage Origination", category: "ai", tags: ["AI", "Finance"], tier: "all" },
+            { name: "Corelayer", website: "corelayer.com", tagline: "AI on-call engineer that debugs using data", category: "enterprise", tags: ["AI", "DevOps"], tier: "notable" },
+            { name: "Corvera", website: "corvera.ai", tagline: "Fully autonomous operations for CPG brands", category: "ai", tags: ["AI", "Supply Chain"], funding: "$1.9M", tier: "all" },
+            { name: "Crow", website: "usecrow.ai", tagline: "Let users control your app through chat", category: "ai", tags: ["AI", "Developer Tools"], tier: "all" },
+            { name: "Cumulus Labs", website: "cumuluslabs.io", tagline: "The Optimized GPU Cloud", category: "infrastructure", tags: ["Infrastructure", "AI"], tier: "all" },
+            { name: "DAIVIN", website: "daivin.tech", tagline: "Tankless dive gear - breath autonomy at sea, land & space", category: "hardware", tags: ["Hardware", "Defense"], tier: "all" },
+            { name: "Didit", website: "didit.me", tagline: "AI-native identity verification platform", category: "infrastructure", tags: ["AI", "Security"], funding: "$2M", tier: "all" },
+            { name: "Ditto Bio", website: "dittobio.com", tagline: "Evolutionary therapies for autoimmune disease", category: "healthcare", tags: ["AI", "Drug Discovery"], tier: "all" },
+            { name: "Docura Health", website: "docurahealth.com", tagline: "AI-Native Medico-Legal Firm", category: "healthcare", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Doomersion", website: "doomersion.com", tagline: "Doomscroll to learn languages", category: "ai", tags: ["AI", "Education"], tier: "all" },
+            { name: "DroneTector", website: "dronetector.com", tagline: "Technology to detect and track hostile drones", category: "hardware", tags: ["Hardware", "Defense"], funding: "$617K", tier: "all" },
+            { name: "EigenPal", website: "eigenpal.com", tagline: "AI Document Workflows for Enterprises", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Emdash", website: "emdash.sh", tagline: "Open-source Agentic Development Environment", category: "developer", tags: ["Developer Tools", "AI"], tier: "all" },
+            { name: "End Close", website: "endclose.com", tagline: "AI powered reconciliation for high-volume payments", category: "fintech", tags: ["AI", "Finance"], tier: "notable" },
+            { name: "Envariant", website: "envariant.ai", tagline: "Interpretability and reasoning infra for foundation models", category: "ai", tags: ["AI", "Infrastructure"], tier: "all" },
+            { name: "Eos AI", website: "helloeos.ai", tagline: "The autonomous operating system for healthcare", category: "healthcare", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Fed10", website: "fed10.ai", tagline: "AI agents that replace your policy consultants", category: "ai", tags: ["AI", "Government"], tier: "all" },
+            { name: "Fenrock", website: "fenrock.ai", tagline: "The most powerful AI agents for Financial Crime Compliance", category: "ai", tags: ["AI", "Fintech"], tier: "all" },
+            { name: "Forum", website: "forum.market", tagline: "The first regulated exchange to trade on attention", category: "fintech", tags: ["Fintech", "Marketplace"], tier: "all" },
+            { name: "FullSeam", website: "fullseam.com", tagline: "AI employee for finance and accounting teams", category: "ai", tags: ["AI", "Finance"], tier: "all" },
+            { name: "General Astronautics", website: "generalastro.com", tagline: "The Space Robotics Company", category: "space", tags: ["Space", "Robotics"], tier: "all" },
+            { name: "General Legal", website: "general.legal", tagline: "The AI native law firm for growth stage companies", category: "ai", tags: ["AI", "Legal"], tier: "notable" },
+            { name: "Glue", website: "buildwithglue.com", tagline: "The Interface Design Canvas for AI agents", category: "ai", tags: ["AI", "Design"], tier: "all" },
+            { name: "GrazeMate", website: "grazemate.com", tagline: "Robot Cowboys that Muster Cattle with AI Drones", category: "hardware", tags: ["Hardware", "Agriculture"], funding: "$1.2M", tier: "all" },
+            { name: "GRU Space", website: "gru.space", tagline: "Building the First Hotel on the Moon", category: "space", tags: ["Space", "Tourism"], funding: "$150M", tier: "all" },
+            { name: "Hex Security", website: "hex.co", tagline: "Agentic Offensive Security at Scale", category: "ai", tags: ["AI", "Security"], funding: "$172M", tier: "all" },
+            { name: "HLabs", website: "hlaboratories.com", tagline: "Developer friendly robotics", category: "hardware", tags: ["Hardware", "Robotics"], tier: "all" },
+            { name: "Human Archive", website: "humanarchive.ai", tagline: "Multimodal data provider for robotics learning", category: "ai", tags: ["AI", "Robotics"], tier: "all" },
+            { name: "IncidentFox", website: "incidentfox.ai", tagline: "AI SRE agent that triages and fixes production incidents", category: "ai", tags: ["AI", "DevOps"], tier: "all" },
+            { name: "Inviscid AI", website: "inviscidai.com", tagline: "Real-time Building Simulations to Optimize Energy", category: "ai", tags: ["AI", "Energy"], tier: "all" },
+            { name: "Jinba", website: "jinba.io", tagline: "Automate any enterprise workflow through chat", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Kita", website: "usekita.com", tagline: "Turn documents into signals for lenders", category: "ai", tags: ["AI", "Fintech"], tier: "all" },
+            { name: "Klaus", website: "klausai.com", tagline: "Fast and Safe OpenClaw on the cloud", category: "ai", tags: ["AI", "Productivity"], tier: "all" },
+            { name: "Kyten Technologies", website: "kytentech.com", tagline: "Custom aerospace-grade battery packs", category: "hardware", tags: ["Hardware", "Space"], tier: "all" },
+            { name: "Lance Live", website: "lance.live", tagline: "AI Voice Agent for Hotel Operations", category: "ai", tags: ["AI", "Hospitality"], tier: "all" },
+            { name: "Laurence", website: "trylaurence.com", tagline: "Automated performance marketing for brands on Amazon", category: "ai", tags: ["AI", "Marketing"], funding: "$500K", tier: "all" },
+            { name: "Legalos", website: "legalos.ai", tagline: "The AI-powered law firm for complex work visas", category: "ai", tags: ["AI", "Legal"], funding: "$10M", tier: "all" },
+            { name: "Lexius", website: "lexius.ai", tagline: "AI Crime Detection for retail theft", category: "ai", tags: ["AI", "Security"], tier: "all" },
+            { name: "Librar", website: "librarlabs.com", tagline: "Intelligence for physical knowledge starting with libraries", category: "ai", tags: ["AI", "Education"], tier: "all" },
+            { name: "Lucent", website: "lucenthq.com", tagline: "AI that automatically watches session replays to detect bugs", category: "ai", tags: ["AI", "Developer Tools"], funding: "$2M", tier: "all" },
+            { name: "Luel", website: "luel.ai", tagline: "Turning everyday words into usable training data", category: "ai", tags: ["AI", "Data"], funding: "$500K", tier: "all" },
+            { name: "Mantis", website: "mantislabs.com", tagline: "Physics-Enhanced Datasets for ML", category: "ai", tags: ["AI", "ML Infrastructure"], tier: "all" },
+            { name: "Martini", website: "martini.film", tagline: "Collaborative AI-native filmmaking for professionals", category: "ai", tags: ["AI", "Video"], tier: "all" },
+            { name: "Maven", website: "trymaven.com", tagline: "Payments for Voice AI Agents", category: "ai", tags: ["AI", "Payments"], tier: "notable" },
+            { name: "Maywood AI", website: "maywoodai.com", tagline: "AI for M&A", category: "ai", tags: ["AI", "Finance"], tier: "notable" },
+            { name: "Mendral", website: "mendral.com", tagline: "AI DevOps Engineer", category: "ai", tags: ["AI", "DevOps"], tier: "notable" },
+            { name: "Menza", website: "menza.ai", tagline: "Your 24/7 Data Analyst", category: "ai", tags: ["AI", "Analytics"], tier: "all" },
+            { name: "MochaCare", website: "mochacare.com", tagline: "AI-powered scheduling and hiring for home care agencies", category: "ai", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Moda", website: "modaflows.com", tagline: "Product analytics for AI-powered products", category: "ai", tags: ["AI", "Analytics"], tier: "all" },
+            { name: "MouseCat", website: "mousecat.ai", tagline: "The AI Toolkit for Risk Teams", category: "ai", tags: ["AI", "Security"], tier: "all" },
+            { name: "Ndea", website: "ndea.com", tagline: "Building AGI that can innovate", category: "ai", tags: ["AI Research", "AGI"], tier: "all" },
+            { name: "o11", website: "o11.ai", tagline: "The Most Integrated M365 AI Suite", category: "ai", tags: ["AI", "Enterprise"], funding: "$530K", tier: "all" },
+            { name: "One Robot", website: "onerobot.io", tagline: "World models for VLA evals and training", category: "ai", tags: ["AI", "Robotics"], tier: "all" },
+            { name: "Opalite Health", website: "opalitehealth.com", tagline: "Solving language barriers in healthcare", category: "healthcare", tags: ["AI", "Healthcare"], tier: "notable" },
+            { name: "Origami Robotics", website: "origami-robotics.com", tagline: "Manipulate Anything Robot", category: "hardware", tags: ["Hardware", "Robotics"], tier: "all" },
+            { name: "Orthogonal", website: "orthogonal.sh", tagline: "Agentic Payments for APIs", category: "ai", tags: ["AI", "Payments"], tier: "all" },
+            { name: "Overshoot", website: "overshoot.ai", tagline: "Space solar arrays that grow to football field size in orbit", category: "space", tags: ["Space", "Energy"], tier: "all" },
+            { name: "Oximy", website: "oximy.com", tagline: "The system of record for enterprise AI usage", category: "enterprise", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Oxus", website: "oxus-ai.com", tagline: "AI-powered automation for internal audit workflows", category: "ai", tags: ["AI", "Enterprise"], funding: "$928K", tier: "all" },
+            { name: "Panta", website: "pantainsure.com", tagline: "Commercial insurance brokerage run by AI agents", category: "ai", tags: ["AI", "Insurance"], tier: "s" },
+            { name: "Pax Historia", website: "paxhistoria.co", tagline: "The first AI-powered grand strategy platform", category: "ai", tags: ["AI", "Gaming"], funding: "$500K", tier: "all" },
+            { name: "Patientdesk.ai", website: "patientdesk.ai", tagline: "AI voice agent for patient calls & admin workflows", category: "healthcare", tags: ["AI", "Healthcare"], funding: "$500K", tier: "all" },
+            { name: "Perfectly", website: "perfectly.so", tagline: "The AI-native Recruiting Operating System", category: "ai", tags: ["AI", "HR"], tier: "all" },
+            { name: "Pocket", website: "heypocket.com", tagline: "The world's best AI note-taking device and app", category: "hardware", tags: ["Hardware", "AI"], funding: "$27M ARR", tier: "notable" },
+            { name: "Pollen", website: "pollen.cx", tagline: "AI Agents for Customer Success", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Polymath Labs", website: "polymathlabs.ai", tagline: "Long-horizon RL for software engineering", category: "ai", tags: ["AI Research", "ML"], tier: "all" },
+            { name: "Polymorph", website: "usepolymorph.com", tagline: "AI that catches intent & churn live", category: "ai", tags: ["AI", "Analytics"], tier: "all" },
+            { name: "Prana Health", website: "pranadoc.com", tagline: "An AI primary care doctor in your pocket", category: "healthcare", tags: ["AI", "Healthcare"], tier: "notable" },
+            { name: "Proximitty", website: "proximitty.ai", tagline: "Autonomous loan servicing and collections", category: "ai", tags: ["AI", "Fintech"], tier: "all" },
+            { name: "Q2Q", website: "tryq2q.com", tagline: "Help private equity firms find acquisitions faster", category: "ai", tags: ["AI", "Finance"], tier: "all" },
+            { name: "RamAIn", website: "ramain.ai", tagline: "Super fast computer-use agents to automate workflows", category: "ai", tags: ["AI", "Automation"], tier: "all" },
+            { name: "Remy.Ai", website: "tryremy.ai", tagline: "Automating dexterous tasks in warehouses", category: "hardware", tags: ["Robotics", "Logistics"], tier: "notable" },
+            { name: "Resonate", website: "resonate.audio", tagline: "The first AI-native messaging platform", category: "ai", tags: ["AI", "Communication"], tier: "all" },
+            { name: "Ressl AI", website: "ressl.ai", tagline: "AI Agents for ERP/CRM Configuration", category: "ai", tags: ["AI", "Enterprise"], funding: "$250K", tier: "all" },
+            { name: "Reframe", website: "usereframe.ai", tagline: "AI agents to automate hardware procurement", category: "ai", tags: ["AI", "Supply Chain"], tier: "all" },
+            { name: "Rhizome AI", website: "rhizomeai.com", tagline: "Always know what the FDA thinks", category: "ai", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Ritivel", website: "ritivel.com", tagline: "Turn clinical trial data into FDA docs in minutes", category: "healthcare", tags: ["AI", "Healthcare"], tier: "notable" },
+            { name: "Robby", website: "tryrobby.com", tagline: "Agentic revenue growth for home service businesses", category: "ai", tags: ["AI", "Field Services"], tier: "notable" },
+            { name: "RoboDock", website: "robodock.tech", tagline: "Robots that run autonomous depots for autonomous fleets", category: "hardware", tags: ["Robotics", "Logistics"], tier: "all" },
+            { name: "RunAnywhere", website: "runanywhere.ai", tagline: "The default way of running On-Device AI at Scale", category: "ai", tags: ["AI", "Edge"], funding: "$10K", tier: "all" },
+            { name: "Ruma Care", website: "rumacare.com", tagline: "Help clinics get patients on biologics faster", category: "healthcare", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "Salus", website: "usesalus.ai", tagline: "Guardrails to validate your agent's actions", category: "ai", tags: ["AI", "Security"], funding: "$3.7M", tier: "all" },
+            { name: "Samora AI", website: "samora.ai", tagline: "Multilingual voice agents with human escalation", category: "ai", tags: ["AI", "Voice"], tier: "all" },
+            { name: "Scout Out", website: "scoutout.ai", tagline: "Find someone to build your building", category: "ai", tags: ["AI", "Construction"], tier: "all" },
+            { name: "Seeing Systems", website: "seeing-systems.com", tagline: "AI Drone Systems for Defence", category: "hardware", tags: ["Hardware", "Defense"], tier: "notable" },
+            { name: "Sentrial", website: "sentrial.com", tagline: "Production Monitoring for AI Products", category: "ai", tags: ["AI", "Monitoring"], tier: "all" },
+            { name: "Sequence Markets", website: "sequencemkts.com", tagline: "Smarter and faster trade execution for digital assets", category: "fintech", tags: ["Fintech", "Crypto"], funding: "$20M", tier: "all" },
+            { name: "Servo7", website: "servo7.com", tagline: "Autonomous Warehouse Robots", category: "hardware", tags: ["Robotics", "Logistics"], tier: "notable" },
+            { name: "Shofo", website: "shofo.ai", tagline: "Common Crawl for Videos", category: "ai", tags: ["AI", "Data"], tier: "all" },
+            { name: "Shortkit", website: "shortkit.dev", tagline: "Make enterprise-scale short-form video really simple", category: "ai", tags: ["AI", "Video"], tier: "all" },
+            { name: "SideKit", website: "appsidekit.com", tagline: "One package to take your mobile app to production", category: "developer", tags: ["Developer Tools", "Mobile"], tier: "all" },
+            { name: "Sila", website: "silahq.com", tagline: "Agentic Workspace Messaging", category: "ai", tags: ["AI", "Productivity"], tier: "all" },
+            { name: "Skillsync", website: "skillsync.wiki", tagline: "Find anyone in open source", category: "ai", tags: ["AI", "Recruiting"], funding: "$500K", tier: "all" },
+            { name: "Sonarly", website: "sonarly.dev", tagline: "Start trusting your production alerts", category: "ai", tags: ["AI", "DevOps"], funding: "$500K", tier: "all" },
+            { name: "Sparkles", website: "sparkles.dev", tagline: "Make everyone on your team an engineer", category: "ai", tags: ["AI", "Developer Tools"], tier: "all" },
+            { name: "Sponge", website: "paysponge.com", tagline: "Financial infrastructure for the agent economy", category: "fintech", tags: ["Fintech", "AI"], tier: "all" },
+            { name: "SpotPay", website: "spotpay.ai", tagline: "Cross-border Personal Finance on Stablecoins", category: "fintech", tags: ["Fintech", "Crypto"], funding: "$450K", tier: "all" },
+            { name: "Squid Energy", website: "squid.energy", tagline: "AI-powered grid planning in your browser", category: "energy", tags: ["AI", "Energy"], tier: "s" },
+            { name: "Stilta", website: "stilta.com", tagline: "Cursor for patent attorneys", category: "ai", tags: ["AI", "Legal"], tier: "all" },
+            { name: "Strand AI", website: "strandai.bio", tagline: "Curated multimodal datasets for biology AI", category: "healthcare", tags: ["AI", "Biology"], tier: "all" },
+            { name: "Synthetic Sciences", website: "syntheticsciences.ai", tagline: "AI co-scientists that run research end-to-end", category: "ai", tags: ["AI Research", "Science"], funding: "$1.9M", tier: "notable" },
+            { name: "Syntropy", website: "syntropy.io", tagline: "Ship code like a power user from day one", category: "ai", tags: ["AI", "Developer Tools"], tier: "all" },
+            { name: "Tensol", website: "tensol.ai", tagline: "Multi-agent systems orchestration", category: "ai", tags: ["AI", "Infrastructure"], tier: "all" },
+            { name: "Terranox AI", website: "terranox.ai", tagline: "AI-powered uranium exploration", category: "ai", tags: ["AI", "Energy"], tier: "all" },
+            { name: "The Token Company", website: "thetokencompany.com", tagline: "Compression middleware that improves LLM outputs", category: "ai", tags: ["AI", "Infrastructure"], tier: "all" },
+            { name: "Travo", website: "travoai.com", tagline: "We use AI to collect and analyze real estate data", category: "ai", tags: ["AI", "Real Estate"], tier: "all" },
+            { name: "Traverse", website: "traverse.so", tagline: "RL environments for long horizon agent journeys", category: "ai", tags: ["AI Research", "ML"], tier: "all" },
+            { name: "Unifold", website: "unifold.io", tagline: "Multi-chain deposit and payment infrastructure", category: "fintech", tags: ["Fintech", "Crypto"], tier: "all" },
+            { name: "Unisson", website: "unisson.ai", tagline: "The AI product specialist for customer-facing teams", category: "ai", tags: ["AI", "Customer Support"], tier: "all" },
+            { name: "Valence", website: "valence.trade", tagline: "Unified prediction markets trading platform", category: "ai", tags: ["AI", "Fintech"], tier: "s" },
+            { name: "Valgorithmic", website: "valgo.dev", tagline: "Algorithmic safety validation tools for autonomy", category: "ai", tags: ["AI", "Safety"], tier: "all" },
+            { name: "Vela", website: "vela.com", tagline: "The AI Scheduling Assistant that truly knows you", category: "ai", tags: ["AI", "Productivity"], tier: "all" },
+            { name: "Velum Labs", website: "velum-labs.com", tagline: "Firewall that controls access to information across LLMs", category: "ai", tags: ["AI", "Security"], funding: "$500K", tier: "all" },
+            { name: "Ventura", website: "ventura.ai", tagline: "AI Teammates for Industrial Distributors", category: "ai", tags: ["AI", "Enterprise"], tier: "all" },
+            { name: "Verdex", website: "verdexai.com", tagline: "Asset Intelligence for Farmland", category: "ai", tags: ["AI", "Agriculture"], tier: "all" },
+            { name: "Veriad", website: "veriad.com", tagline: "AI compliance officers", category: "ai", tags: ["AI", "Compliance"], funding: "$500K", tier: "all" },
+            { name: "Visibl Semiconductors", website: "visiblsemi.com", tagline: "The AI IDE for chip design", category: "ai", tags: ["AI", "Hardware"], tier: "all" },
+            { name: "Voltair", website: "voltairlabs.com", tagline: "Self Charging Drones", category: "hardware", tags: ["Hardware", "Energy"], tier: "all" },
+            { name: "VOYGR", website: "voygr.tech", tagline: "Real-world place intelligence for AI apps", category: "ai", tags: ["AI", "Data"], tier: "all" },
+            { name: "Voxel Energy", website: "voxelenergy.com", tagline: "Energy independent data centers", category: "hardware", tags: ["Hardware", "Energy"], tier: "notable" },
+            { name: "Wayco", website: "wayco.ai", tagline: "AI operator for legal cases", category: "ai", tags: ["AI", "Legal"], tier: "all" },
+            { name: "Wideframe", website: "wideframe.com", tagline: "AI agent for video work outside the NLE", category: "ai", tags: ["AI", "Video"], tier: "all" },
+            { name: "Zatanna", website: "zatanna.ai", tagline: "Adaptive Healthcare Admin Agents", category: "ai", tags: ["AI", "Healthcare"], tier: "all" },
+            { name: "ZeroSettle", website: "zerosettle.io", tagline: "Bypass the App Store tax", category: "fintech", tags: ["Fintech", "Mobile"], tier: "all" },
+            { name: "Zymbly", website: "zymbly.com", tagline: "Automates admin for aircraft technicians", category: "ai", tags: ["AI", "Aviation"], tier: "all" }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAllCompanies();
+            setupSearch();
+            setupFilters();
+            updateCounts();
+        });
+
+        function renderAllCompanies() {
+            const grid = document.getElementById('all-grid');
+            const notableGrid = document.getElementById('notable-grid');
+            
+            // Render all companies
+            grid.innerHTML = companies.map(company => createCompanyCard(company)).join('');
+            
+            // Add click handlers for modals
+            document.querySelectorAll('.company-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('a')) {
+                        const name = card.querySelector('.company-name').textContent;
+                        const tagline = card.querySelector('.company-tagline').textContent;
+                        const website = card.querySelector('.company-website').textContent.trim();
+                        openModal(name, tagline, website);
+                    }
+                });
+            });
+        }
+
+        function createCompanyCard(company) {
+            const initials = company.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            const fundingTag = company.funding ? `<span class="tag tag-funding">${company.funding}</span>` : '';
+            
+            return `
+                <div class="company-card" data-category="${company.category} ${company.tags.join(' ').toLowerCase()}" data-name="${company.name.toLowerCase()}">
+                    <div class="card-header">
+                        <div class="company-logo">${initials}</div>
+                        <div class="company-info">
+                            <div class="company-name">${company.name}</div>
+                            <a href="https://${company.website}" target="_blank" class="company-website">
+                                ${company.website}
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <p class="company-tagline">${company.tagline}</p>
+                    <div class="card-footer">
+                        <span class="tag tag-category">${company.tags[0]}</span>
+                        <span class="tag tag-industry">${company.tags[1]}</span>
+                        ${fundingTag}
+                    </div>
+                </div>
+            `;
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterCompanies(query);
+            });
+        }
+
+        function setupFilters() {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    filterByCategory(filter);
+                });
+            });
+        }
+
+        function filterCompanies(query) {
+            const cards = document.querySelectorAll('.company-card');
+            let hasVisible = false;
+            
+            cards.forEach(card => {
+                const name = card.dataset.name || '';
+                const category = card.dataset.category || '';
+                const tagline = card.querySelector('.company-tagline')?.textContent.toLowerCase() || '';
+                
+                const matches = name.includes(query) || 
+                              category.includes(query) || 
+                              tagline.includes(query);
+                
+                card.style.display = matches ? 'block' : 'none';
+                if (matches) hasVisible = true;
+            });
+            
+            updateNoResults(hasVisible);
+        }
+
+        function filterByCategory(category) {
+            const cards = document.querySelectorAll('.company-card');
+            let hasVisible = false;
+            
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                    hasVisible = true;
+                } else {
+                    const cardCategory = card.dataset.category || '';
+                    const matches = cardCategory.includes(category);
+                    card.style.display = matches ? 'block' : 'none';
+                    if (matches) hasVisible = true;
+                }
+            });
+            
+            updateNoResults(hasVisible);
+        }
+
+        function updateNoResults(hasVisible) {
+            const grids = ['tier-s', 'notable-grid', 'all-grid'];
+            grids.forEach(gridId => {
+                const grid = document.getElementById(gridId);
+                if (!grid) return;
+                
+                const visibleCards = grid.querySelectorAll('.company-card[style="display: block;"], .company-card:not([style])');
+                
+                if (visibleCards.length === 0 && gridId === 'all-grid') {
+                    if (!grid.querySelector('.no-results')) {
+                        const noResults = document.createElement('div');
+                        noResults.className = 'no-results';
+                        noResults.innerHTML = `
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <p>No companies found matching your search</p>
+                        `;
+                        grid.appendChild(noResults);
+                    }
+                } else {
+                    const noResults = grid.querySelector('.no-results');
+                    if (noResults) noResults.remove();
+                }
+            });
+        }
+
+        function updateCounts() {
+            document.getElementById('all-count').textContent = companies.length;
+        }
+
+        function openModal(name, description, website) {
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalDescription').textContent = description;
+            document.getElementById('modalLinks').innerHTML = `
+                <a href="https://${website}" target="_blank" class="modal-link primary">
+                    Visit Website
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                </a>
+                <a href="https://www.ycombinator.com/companies" target="_blank" class="modal-link">
+                    YC Profile
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </a>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
